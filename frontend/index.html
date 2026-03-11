@@ -21,10 +21,12 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Ambient Background Lighting -->
+    <div class="bg-blobs"></div>
 
     <header>
         <h1>CashCuts <i class="ph-fill ph-scissors"></i></h1>
-        <p>Put money in. See the win. Split the cuts.</p>
+        <p>Chip in. Secure the bag. Divvy the slices.</p>
         <button id="nav-btn-history" class="icon-btn" aria-label="View History" style="display:none;">
             <i class="ph-bold ph-clock-counter-clockwise"></i>
         </button>
@@ -41,11 +43,11 @@
                 <div class="stats-container">
                     <div class="stat-card">
                         <span>Weekly P/L</span>
-                        <h3 id="stat-weekly">$0.00</h3>
+                        <h3 id="stat-weekly">₹0.00</h3>
                     </div>
                     <div class="stat-card">
                         <span>Monthly P/L</span>
-                        <h3 id="stat-monthly">$0.00</h3>
+                        <h3 id="stat-monthly">₹0.00</h3>
                     </div>
                 </div>
                 <h3>Recent Cuts</h3>
@@ -84,7 +86,7 @@
             <!-- Section 1: Players & Money Put In -->
             <section id="section-players" class="card">
                 <div class="section-badge"><i class="ph-fill ph-wallet"></i></div>
-                <h2>Who put money in?</h2>
+                <h2>Who chipped in?</h2>
                 <p class="subtitle">Max 4 players.</p>
                 
                 <div class="players-list">
@@ -92,7 +94,7 @@
                     <div class="player-input-row">
                         <input type="text" class="p-name" placeholder="P1 Name" value="Player 1">
                         <div class="currency-input">
-                            <span>$</span>
+                            <span>₹</span>
                             <input type="number" class="p-putin" placeholder="0" min="0">
                         </div>
                     </div>
@@ -100,7 +102,7 @@
                     <div class="player-input-row">
                         <input type="text" class="p-name" placeholder="P2 Name" value="Player 2">
                         <div class="currency-input">
-                            <span>$</span>
+                            <span>₹</span>
                             <input type="number" class="p-putin" placeholder="0" min="0">
                         </div>
                     </div>
@@ -108,7 +110,7 @@
                     <div class="player-input-row">
                         <input type="text" class="p-name" placeholder="P3 Name" value="Player 3">
                         <div class="currency-input">
-                            <span>$</span>
+                            <span>₹</span>
                             <input type="number" class="p-putin" placeholder="0" min="0">
                         </div>
                     </div>
@@ -116,14 +118,14 @@
                     <div class="player-input-row">
                         <input type="text" class="p-name" placeholder="P4 Name" value="Player 4">
                         <div class="currency-input">
-                            <span>$</span>
+                            <span>₹</span>
                             <input type="number" class="p-putin" placeholder="0" min="0">
                         </div>
                     </div>
                 </div>
 
                 <div class="totals-banner">
-                    Total Put In: <strong id="total-put-in">$0.00</strong>
+                    Total Chipped In: <strong id="total-put-in">₹0.00</strong>
                 </div>
             </section>
 
@@ -134,33 +136,33 @@
                 
                 <div class="input-grid">
                     <div class="input-group">
-                        <label for="money-got-back">Got Back</label>
+                        <label for="money-got-back">Bag Secured</label>
                         <div class="currency-input">
-                            <span>$</span>
+                            <span>₹</span>
                             <input type="number" id="money-got-back" placeholder="0" min="0">
                         </div>
                     </div>
                     <div class="input-group">
-                        <label for="debt-clear">Debt to Clear</label>
+                        <label for="debt-clear">Tabs to Clear</label>
                         <div class="currency-input">
-                            <span>$</span>
+                            <span>₹</span>
                             <input type="number" id="debt-clear" value="0" min="0">
                         </div>
                     </div>
                 </div>
 
                 <div class="input-group mt-3">
-                    <label for="total-cuts">Number of Cuts (1-4)</label>
+                    <label for="total-cuts">Number of Slices (1-4)</label>
                     <input type="range" id="total-cuts" min="1" max="4" value="2">
-                    <div class="range-value" id="cuts-display">2 Cuts</div>
+                    <div class="range-value" id="cuts-display">2 Slices</div>
                 </div>
             </section>
 
             <!-- Section 3/4: Cut Assignment & Calculate -->
             <section id="section-assignments" class="card">
                 <div class="section-badge"><i class="ph-fill ph-pizza"></i></div>
-                <h2>Assign Cuts</h2>
-                <p class="subtitle">Assign exactly <strong id="cuts-target">2</strong> cuts.</p>
+                <h2>Divvy Slices</h2>
+                <p class="subtitle">Assign exactly <strong id="cuts-target">2</strong> slices.</p>
 
                 <div class="cuts-list" id="cuts-list">
                     <!-- Injected dynamically based on active players -->
@@ -181,20 +183,20 @@
                 
                 <div class="result-summary">
                     <div class="summary-item">
-                        <span>Win/Loss</span>
-                        <h3 id="res-win-loss" class="neutral">$0.00</h3>
+                        <span>Secured/Fumbled</span>
+                        <h3 id="res-win-loss" class="neutral">₹0.00</h3>
                     </div>
                     <div class="summary-item">
-                        <span>Debt Cleared</span>
-                        <h3 id="res-debt-cleared">$0.00</h3>
+                        <span>Tabs Cleared</span>
+                        <h3 id="res-debt-cleared">₹0.00</h3>
                     </div>
                     <div class="summary-item">
-                        <span>Money to Split</span>
-                        <h3 id="res-remaining">$0.00</h3>
+                        <span>Loot Pool</span>
+                        <h3 id="res-remaining">₹0.00</h3>
                     </div>
                     <div class="summary-item">
-                        <span>Value per Cut</span>
-                        <h3 id="res-val-per-cut">$0.00</h3>
+                        <span>Slice Size</span>
+                        <h3 id="res-val-per-cut">₹0.00</h3>
                     </div>
                 </div>
 

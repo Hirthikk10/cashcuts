@@ -163,7 +163,7 @@ function calculateTotalPutIn() {
     pPutIns.forEach(input => {
         total += parseFloat(input.value) || 0;
     });
-    totalPutInEl.innerText = `$${total.toFixed(2)}`;
+    totalPutInEl.innerText = `₹${total.toFixed(2)}`;
     return total;
 }
 
@@ -246,18 +246,18 @@ function performFinalCalculation() {
 
     if (winLoss < 0) {
         // It's a loss. No money split. Debt isn't cleared.
-        resWinLoss.innerText = `Loss: $${Math.abs(winLoss).toFixed(2)}`;
+        resWinLoss.innerText = `Loss: ₹${Math.abs(winLoss).toFixed(2)}`;
         resWinLoss.className = 'loss';
-        resDebtCleared.innerText = `$0.00`;
-        resRemaining.innerText = `$0.00`;
-        resValPerCut.innerText = `$0.00`;
+        resDebtCleared.innerText = `₹0.00`;
+        resRemaining.innerText = `₹0.00`;
+        resValPerCut.innerText = `₹0.00`;
         
         // Payouts are essentially 0 mapping
         playersConfig.forEach(p => p.payout = 0);
         
     } else {
         // It's a win
-        resWinLoss.innerText = `Win: $${winLoss.toFixed(2)}`;
+        resWinLoss.innerText = `Win: ₹${winLoss.toFixed(2)}`;
         resWinLoss.className = 'win';
 
         // Clear debt
@@ -269,12 +269,12 @@ function performFinalCalculation() {
             remainingMoney = 0; // Debt reduced, but no money to split
         }
 
-        resDebtCleared.innerText = `$${actualDebtCleared.toFixed(2)}`;
-        resRemaining.innerText = `$${remainingMoney.toFixed(2)}`;
+        resDebtCleared.innerText = `₹${actualDebtCleared.toFixed(2)}`;
+        resRemaining.innerText = `₹${remainingMoney.toFixed(2)}`;
 
         // Split cuts
         valuePerCut = totalCuts > 0 ? (remainingMoney / totalCuts) : 0;
-        resValPerCut.innerText = `$${valuePerCut.toFixed(2)}`;
+        resValPerCut.innerText = `₹${valuePerCut.toFixed(2)}`;
 
         // Calculate payouts
         playersConfig.forEach(p => {
@@ -289,7 +289,7 @@ function performFinalCalculation() {
         d.className = `payout-row ${p.payout > 0 ? 'positive' : 'zero'}`;
         d.innerHTML = `
             <span>${p.name} Gets:</span>
-            <span>$${p.payout.toFixed(2)}</span>
+            <span>₹${p.payout.toFixed(2)}</span>
         `;
         payoutListContainer.appendChild(d);
     });
@@ -358,10 +358,10 @@ async function openDashboard() {
         const wProfit = document.getElementById('stat-weekly');
         const mProfit = document.getElementById('stat-monthly');
         
-        wProfit.innerText = `$${summary.weekly_profit_loss.toFixed(2)}`;
+        wProfit.innerText = `₹${summary.weekly_profit_loss.toFixed(2)}`;
         wProfit.style.color = summary.weekly_profit_loss >= 0 ? 'var(--success)' : 'var(--danger)';
         
-        mProfit.innerText = `$${summary.monthly_profit_loss.toFixed(2)}`;
+        mProfit.innerText = `₹${summary.monthly_profit_loss.toFixed(2)}`;
         mProfit.style.color = summary.monthly_profit_loss >= 0 ? 'var(--success)' : 'var(--danger)';
 
         // Fetch history
@@ -376,15 +376,18 @@ async function openDashboard() {
         } else {
             historyData.forEach(h => {
                 const isWin = h.profit_loss >= 0;
-                const d = new Date(h.date).toLocaleDateString();
+                const d = new Date(h.date).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
                 const card = document.createElement('div');
                 card.className = 'history-card';
                 card.innerHTML = `
-                    <div class="history-date">${d} • Got back: $${h.total_got_back}</div>
+                    <div class="history-date">
+                        <span>${d}</span>
+                        <span>Chipped in: ₹${h.total_put_in}</span>
+                    </div>
                     <div class="history-grid">
                         <span>Result:</span>
                         <span class="${isWin ? 'history-profit' : 'history-loss'}">
-                            ${isWin ? '+' : ''}$${h.profit_loss.toFixed(2)}
+                            ${isWin ? '+' : ''}₹${h.profit_loss.toFixed(2)}
                         </span>
                     </div>
                 `;
