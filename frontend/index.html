@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CashCuts ✂️💸</title>
+    
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- PWA Setup -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4F46E5">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>CashCuts <i class="ph-fill ph-scissors"></i></h1>
+        <p>Put money in. See the win. Split the cuts.</p>
+        <button id="nav-btn-history" class="icon-btn" aria-label="View History" style="display:none;">
+            <i class="ph-bold ph-clock-counter-clockwise"></i>
+        </button>
+    </header>
+
+    <main id="app-container">
+        <!-- Dashboard Drawer (Overlay/Hidden by default) -->
+        <div id="drawer-dashboard" class="drawer hidden">
+            <div class="drawer-header">
+                <h2><i class="ph-fill ph-chart-bar"></i> Team Dashboard</h2>
+                <button id="close-drawer" class="icon-btn"><i class="ph-bold ph-x"></i></button>
+            </div>
+            <div class="drawer-content">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <span>Weekly P/L</span>
+                        <h3 id="stat-weekly">$0.00</h3>
+                    </div>
+                    <div class="stat-card">
+                        <span>Monthly P/L</span>
+                        <h3 id="stat-monthly">$0.00</h3>
+                    </div>
+                </div>
+                <h3>Recent Cuts</h3>
+                <div id="history-list" class="history-list">
+                    <!-- History cards injected here -->
+                    <div class="empty-state">No cuts yet!</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 0: Team Access -->
+        <section id="section-team" class="card active-section">
+            <div class="section-badge"><i class="ph-fill ph-users-three"></i></div>
+            <h2>Create or Join a Team</h2>
+            <p class="subtitle">Enter a unique team name to group your squad's cuts.</p>
+            
+            <div class="input-group">
+                <label for="team-name">Team Name</label>
+                <input type="text" id="team-name" placeholder="e.g. WeekendBoys" autocomplete="off">
+            </div>
+            <div class="input-group">
+                <label for="team-passcode">Passcode (Optional)</label>
+                <input type="password" id="team-passcode" placeholder="Leave blank if none">
+            </div>
+            <button id="btn-team-access" class="primary-btn">Let's Go! <i class="ph-bold ph-arrow-right"></i></button>
+            <div id="team-error" class="error-msg"></div>
+        </section>
+
+        <!-- Main App Flow (Hidden until team logic passes) -->
+        <div id="main-flow" class="hidden">
+            <div class="team-banner">
+                <span>Team: <strong id="display-team-name">-</strong></span>
+                <button id="btn-change-team" class="text-btn">Change</button>
+            </div>
+
+            <!-- Section 1: Players & Money Put In -->
+            <section id="section-players" class="card">
+                <div class="section-badge"><i class="ph-fill ph-wallet"></i></div>
+                <h2>Who put money in?</h2>
+                <p class="subtitle">Max 4 players.</p>
+                
+                <div class="players-list">
+                    <!-- Player 1 -->
+                    <div class="player-input-row">
+                        <input type="text" class="p-name" placeholder="P1 Name" value="Player 1">
+                        <div class="currency-input">
+                            <span>$</span>
+                            <input type="number" class="p-putin" placeholder="0" min="0">
+                        </div>
+                    </div>
+                    <!-- Player 2 -->
+                    <div class="player-input-row">
+                        <input type="text" class="p-name" placeholder="P2 Name" value="Player 2">
+                        <div class="currency-input">
+                            <span>$</span>
+                            <input type="number" class="p-putin" placeholder="0" min="0">
+                        </div>
+                    </div>
+                    <!-- Player 3 -->
+                    <div class="player-input-row">
+                        <input type="text" class="p-name" placeholder="P3 Name" value="Player 3">
+                        <div class="currency-input">
+                            <span>$</span>
+                            <input type="number" class="p-putin" placeholder="0" min="0">
+                        </div>
+                    </div>
+                    <!-- Player 4 -->
+                    <div class="player-input-row">
+                        <input type="text" class="p-name" placeholder="P4 Name" value="Player 4">
+                        <div class="currency-input">
+                            <span>$</span>
+                            <input type="number" class="p-putin" placeholder="0" min="0">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="totals-banner">
+                    Total Put In: <strong id="total-put-in">$0.00</strong>
+                </div>
+            </section>
+
+            <!-- Section 2: Result Inputs -->
+            <section id="section-results-input" class="card">
+                <div class="section-badge"><i class="ph-fill ph-money"></i></div>
+                <h2>The Outcome</h2>
+                
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="money-got-back">Got Back</label>
+                        <div class="currency-input">
+                            <span>$</span>
+                            <input type="number" id="money-got-back" placeholder="0" min="0">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="debt-clear">Debt to Clear</label>
+                        <div class="currency-input">
+                            <span>$</span>
+                            <input type="number" id="debt-clear" value="0" min="0">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group mt-3">
+                    <label for="total-cuts">Number of Cuts (1-4)</label>
+                    <input type="range" id="total-cuts" min="1" max="4" value="2">
+                    <div class="range-value" id="cuts-display">2 Cuts</div>
+                </div>
+            </section>
+
+            <!-- Section 3/4: Cut Assignment & Calculate -->
+            <section id="section-assignments" class="card">
+                <div class="section-badge"><i class="ph-fill ph-pizza"></i></div>
+                <h2>Assign Cuts</h2>
+                <p class="subtitle">Assign exactly <strong id="cuts-target">2</strong> cuts.</p>
+
+                <div class="cuts-list" id="cuts-list">
+                    <!-- Injected dynamically based on active players -->
+                </div>
+
+                <div class="cuts-tally">
+                    Assigned: <span id="cuts-assigned-tally">0</span> / <span id="cuts-total-tally">2</span>
+                </div>
+                <div id="cut-error" class="error-msg"></div>
+
+                <button id="btn-calculate" class="primary-btn mt-4">Calculate <i class="ph-bold ph-magic-wand"></i></button>
+            </section>
+
+            <!-- Section 5: Final Results (hidden initially) -->
+            <section id="section-results" class="card result-card hidden">
+                <div class="section-badge accent"><i class="ph-fill ph-confetti"></i></div>
+                <h2>The Final Cut</h2>
+                
+                <div class="result-summary">
+                    <div class="summary-item">
+                        <span>Win/Loss</span>
+                        <h3 id="res-win-loss" class="neutral">$0.00</h3>
+                    </div>
+                    <div class="summary-item">
+                        <span>Debt Cleared</span>
+                        <h3 id="res-debt-cleared">$0.00</h3>
+                    </div>
+                    <div class="summary-item">
+                        <span>Money to Split</span>
+                        <h3 id="res-remaining">$0.00</h3>
+                    </div>
+                    <div class="summary-item">
+                        <span>Value per Cut</span>
+                        <h3 id="res-val-per-cut">$0.00</h3>
+                    </div>
+                </div>
+
+                <div class="payout-list" id="payout-list">
+                    <!-- Injected via JS -->
+                </div>
+
+                <button id="btn-save-log" class="primary-btn mt-4">Save to History <i class="ph-bold ph-floppy-disk"></i></button>
+                <div id="save-status" class="status-msg"></div>
+            </section>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js');
+            });
+        }
+    </script>
+</body>
+</html>
